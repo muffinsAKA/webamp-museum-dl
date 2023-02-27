@@ -6,6 +6,7 @@ import time
 import pandas as pd
 import tqdm
 import os
+import math
 
 # Set pandas column width to be as long as needed to display full URL
 pd.set_option('display.max_colwidth', None)
@@ -35,13 +36,16 @@ print(f'{total_skins} total skins found')
 # Create future home of all da links
 link_table = pd.DataFrame()
 
+# Set initial query offset value
+offset_amt = 0
+
 # Run query for 1000 skins (api limit) and offset the next request by 1000
-for i in tqdm.tqdm(range(0, total_skins, 1000), desc="Gathering skin database"):
+for i in tqdm.tqdm(range(0, math.ceil(total_skins/1000)), desc="Gathering skin database (per 1k)"):
     
     # Create query for current offset of skins
     QUERY = (
     "query {" + '\n'
-  f"skins(first: 1000, offset: {i})" + "{" + '\n'
+  f"skins(first: 1000, offset: {offset_amt})" + "{" + '\n'
     "nodes {" + '\n'
       "filename" + '\n'
       "download_url" + '\n'
@@ -65,8 +69,11 @@ for i in tqdm.tqdm(range(0, total_skins, 1000), desc="Gathering skin database"):
     # Append the newest skins dataframe with the overall link_table dataframe
     link_table=pd.concat([df_new,link_table], ignore_index=True)
 
-    # Sleep for 2 seconds to not spam
-    time.sleep(2)
+    # Increase offset for next round
+    offset_amt = offset_amt + 1000
+
+    # Pause for a sec just in case
+    #time.sleep(.01)
 
  # Find the total length of the skins (should be equal to the total count but who knows!)
 links_total = len(link_table)
@@ -81,13 +88,16 @@ headers = {
 skins_dir = "skins"
 curdir = os.getcwd()
 path = os.path.join(curdir, skins_dir)
-os.mkdir(path)
+
+if not os.path.exists(path):
+   os.mkdir(path)
+   print('"Skins" folder created')
+  
 
 # For each of the skins, send a download request and auto-rename to the skin name
 for i in tqdm.tqdm(range(links_total), desc="Downloading Skins"):
   filename = link_table.iloc[i]['filename'].replace('.zip', '').replace('.wsz', '')
   download_url = link_table.iloc[i]['download_url']
-  print(download_url)
+  print(f'Downloading: {filename}')
   r = requests.get((download_url), headers=headers, allow_redirects=True)
-  open(f'{path}{filename}.wsz', "wb").write(r.content)
-  time.sleep(1)
+  open(f'{path}/{filename}.wsz', "wb").write(r.content)
