@@ -64,8 +64,8 @@ for i in tqdm.tqdm(range(0, total_skins, 1000), desc="Gathering skin database"):
     # Append the newest skins dataframe with the overall link_table dataframe
     link_table=pd.concat([df_new,link_table], ignore_index=True)
 
-    # Sleep for 3 seconds to not spam
-    time.sleep(5)
+    # Sleep for 2 seconds to not spam
+    time.sleep(2)
 
  # Find the total length of the skins (should be equal to the total count but who knows!)
 links_total = len(link_table)
