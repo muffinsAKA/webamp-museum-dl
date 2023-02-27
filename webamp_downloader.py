@@ -5,6 +5,7 @@ import json
 import time
 import pandas as pd
 import tqdm
+import os
 
 # Set pandas column width to be as long as needed to display full URL
 pd.set_option('display.max_colwidth', None)
@@ -76,11 +77,17 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
 }
 
+# Make directory for skisn
+skins_dir = "skins"
+curdir = os.getcwd()
+path = os.path.join(curdir, skins_dir)
+os.mkdir(path)
+
 # For each of the skins, send a download request and auto-rename to the skin name
 for i in tqdm.tqdm(range(links_total), desc="Downloading Skins"):
-  filename = link_table.iloc[i]['filename']
+  filename = link_table.iloc[i]['filename'].replace('.zip', '').replace('.wsz', '')
   download_url = link_table.iloc[i]['download_url']
   print(download_url)
   r = requests.get((download_url), headers=headers, allow_redirects=True)
-  open(f'{filename}'.replace('zip', ''), "wb").write(r.content)
+  open(f'{path}{filename}.wsz', "wb").write(r.content)
   time.sleep(1)
