@@ -72,9 +72,6 @@ for i in tqdm.tqdm(range(0, math.ceil(total_skins/1000)), desc="Gathering skin d
     # Increase offset for next round
     offset_amt = offset_amt + 1000
 
-    # Pause for a sec just in case
-    #time.sleep(.01)
-
  # Find the total length of the skins (should be equal to the total count but who knows!)
 links_total = len(link_table)
 print(links_total)
