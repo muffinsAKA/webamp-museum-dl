@@ -10,3 +10,7 @@ probably inefficiently
 ```bash
 pip install tqdm
 ```
+[pandas](https://github.com/pandas-dev/pandas)
+```bash
+pip install pandas
+```
