@@ -96,8 +96,12 @@ if not os.path.exists(path):
 
 # For each of the skins, send a download request and auto-rename to the skin name
 for i in tqdm.tqdm(range(links_total), desc="Downloading Skins"):
-  filename = link_table.iloc[i]['filename'].replace('.zip', '').replace('.wsz', '')
-  download_url = link_table.iloc[i]['download_url']
-  print(f'Downloading: {filename}')
-  r = requests.get((download_url), headers=headers, allow_redirects=True)
-  open(f'{path}/{filename}.wsz', "wb").write(r.content)
+  filename = link_table.iloc[i]['filename']
+  if filename:
+     filename_clean = filename.replace('.zip', '').replace('.wsz', '')
+     download_url = link_table.iloc[i]['download_url']
+     print(f'Downloading: {filename_clean}')
+     r = requests.get((download_url), headers=headers, allow_redirects=True)
+     open(f'{path}/{filename_clean}.wsz', "wb").write(r.content)
+  else:
+     continue
