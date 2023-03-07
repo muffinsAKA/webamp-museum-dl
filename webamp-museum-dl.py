@@ -403,7 +403,12 @@ if load_cfg:
 if not load_cfg:
   sort = trange(links_total, desc="Sorting Skins", colour="#FEB60C")
 
-for i in trange(len(skins_db), desc="Checking for duplicates"):
+# if prev database, load md5s into dupe pool
+if load_cfg:
+    for d in skins_db['skins']['dupes']:
+      md5pool.append(d)
+    
+for i in trange(len(skins_db['skins']), desc="Checking for duplicates"):
   md5 = skins_db['skins'][i]['md5']
   md5_check(md5)
 
