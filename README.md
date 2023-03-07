@@ -1,5 +1,18 @@
 # webamp-museum-dl
 
-Downloads all existing skins from the Webamp Museum @ https://skins.webamp.org/
+downloads all existing skins from the Webamp Museum @ https://skins.webamp.org/
 
-probably inefficiently
+will update from where you left off last time if you want to get the latest skins. lord willing.
+
+
+# Requirements
+
+tqdm
+```
+pip install tqdm
+```
+
+requests
+```
+pip install requests
+```
