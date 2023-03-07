@@ -18,71 +18,196 @@ types = []
 md5_pool = []
 name_pool = []
 skins_db = {
-   "skins": [
-   
-   ],
-   "dupes": [
-   
-   ],
-   "config": [
-   
-   ]
-  }
-fn_dupes = {
-   "dupes": [
-   
-   ]
+   "skins": [],
+   "dupes": [],
+   "config": {
+  
+   }
   }
 
-cfg = {
-   "config": [
-   
-   ] 
 
-  }
+art = r"""
+                        ::                        
+                      .*@@#:               .      
+                    .*@#:.*@#:          :+%@      
+                  .*@#:    .*@#:     -*@@@@@      
+                .*@#:        .*@#-=#@@@@#.@@      
+              .*@*.           :*@@*+#@#: -@@      
+            .*@#:          -*@@*-.+@%: .#@*       
+          .*@#:        .=#@%+:  =@%-  +@%:        
+        .*@#:       :+%@*-.   -%@=  +@%@#:        
+      .*@*.      -*@%+:     :%@@#++@@= .+@#:      
+    .*@#:    .=#@#=.          .:-=*@@@@. .*@#:    
+  .*@#:     #@@@@@@@@@@@%=      :*@@*@@.   .*@#:  
+ =@@=       @@:    .=%@+.   .=*@%+:  @@.     :@@* 
+  :#@*.     @@.   =%@+   :+%@#=.   :+@@.   .+@%-  
+    :#@*.   @@@@@@@+  :+%@*-    :*@@*-    +@%-    
+      :#@+.   -%@+.-*@@*-    -*@@+:     =@%-      
+        :#@*=%@#+#@#+:   :+#@#=.     .+@%-        
+          *@@@@@#-    :+@@*-       .+@%-          
+        -%@@@*-    -*@@*:         +@%-            
+      :%@%+:    =#@%+:          =@%-              
+      %@-   :+#@##@*.        .+@%-                
+      %@.-*@@*-   :#@*.    .+@%-                  
+      %@@%+:        :#@*..+@%-                    
+      #+:             :#@@%-                      
+
+                                                         
+  [ webamp skin downloader v0.00001 alpha ]
+                          by muffinsAKA"""
+
+# print logo
+print("\033[38;5;208m" + art + "\033[0m")
+
+
+input("[ Press Enter to continue... ]")
+print('')
+print('Is this your first time downloading skins using this tool?')
+print('1.) Yes     2.) No')
+first_time = int(input())
+if first_time == 1:
+  print('')
+  print('Ok cool.')
+  time.sleep(1)
+if first_time == 2:
+  print('')
+  print('Did you move anything or is it all still in the same folder as this app?')
+  print('Like your skins folder, your database file.....those things.')
+  print('1.) It\'s all still here     2.) I moved it')
+  file_location = int(input())
+  if file_location == 1:
+    print('')
+    print('Thank god. Alright moving on.')
+    time.sleep(2)
+    input('[ Press any key to move on ]')
+  if file_location == 2:
+    print('')
+    print('Well put it back. I\'m not building a whole customized folder flow.')
+    time.sleep(2)
+    print(r"""It should look like this:
+
+          [Script Folder]
+                |
+                |
+                [Skins]
+                |  -> [Modern]
+                |  -> [Classic]
+                |
+                webamp-museum-dl.py
+                webamp_skins_db.json""")
+    print('')
+    time.sleep(2)
+    input('lmk when you put that shit back')
+
+print('')
+print('How many downloads do you want going at the same time?')
+print('1.) As many as possible    2.) Custom')
+dl_amt = int(input())
+if dl_amt == 1:
+  cpus = cpu_count()
+  dl_custom = cpus - 1
+  print('')
+  print('You got it, pal. See you on the other side.')
+  time.sleep(1)
+  print('3')
+  time.sleep(1)
+  print('2')
+  time.sleep(1)
+  print('1.5')
+  time.sleep(1)
+  print('haha jk')
+  time.sleep(3)
+if dl_amt == 2:
+  time.sleep(1)
+  cpus = cpu_count()
+  max_dl = cpus - 1
+  print('')
+  print(f'Hit me with it. How many downloads at a time? (MAX: {max_dl})')
+  dl_custom = int(input())
+  if dl_custom <= max_dl:
+    print('')
+    print(f'ok {dl_custom} at a time. have fun out there, champ')
+    time.sleep(3)
+  else:
+      print('')
+      print(f'buddy. pal. {dl_custom}? what is this?')
+      time.sleep(3)
+      print('')
+      print('One more shot.')
+      time.sleep(1)
+      print('')
+      print(f'Hit me with it. How many downloads at a time? (MAX: {max_dl})')
+      dl_custom = int(input())
+      if dl_custom <= max_dl:
+        print('You got it, pal. See you on the other side.')
+        time.sleep(1)
+        print('3')
+        time.sleep(1)
+        print('2')
+        time.sleep(3)
+        print('1.5')
+        time.sleep(1)
+        print('haha jk')
+        time.sleep(1)
+      else:
+        print('goodbye.')
+        time.sleep(5)
+        sys.exit(1)
+
+
+
+
 
 # FUNCTIONS
 # Download function that extracts the tuple to create variables
 def download_url(inputs):
     
-    url, fn, type = inputs[0], inputs[1], inputs[2]
+  url, fn, type = inputs[0], inputs[1], inputs[2]
 
-    fn.replace('/','-')
+  fn = fn.replace('/','-')
+
+  # If there's no url, add it to the number of missing show urls
+  if url:
+
+    # if the filename exists in the folder already
+    if fn in os.listdir(classic_path) or os.listdir(modern_path):
+
+      filename_split = os.path.splitext(fn)
+      fn = filename_split[0] + '_DUPE' + filename_split[1]
     
-    # If there's no url, add it to the number of missing show urls
-    if url:
-  
-      # Request the url for download and then write to file
-      with requests.get(url, stream=True) as r:
-        r.raise_for_status()
+    if type:
+      fn = os.path.join(classic_path + '/' + fn)
+    
+    if not type:
+      fn = os.path.join(modern_path + '/' + fn)
         
-        if type:
-          fn = os.path.join(classic_path + '/' + fn)
-        
-        if not type:
-           fn = os.path.join(modern_path + '/' + fn)
+    # Request the url for download and then write to file
+    with requests.get(url, stream=True) as r:
+      r.raise_for_status()
 
-        with open(f'{fn}', 'wb') as f:
-            pbar = tqdm.tqdm(total=int(r.headers['Content-Length']),
-                        desc=f"Downloading {fn}",
-                        unit='MiB',
-                        unit_divisor=1024,
-                        unit_scale=True,
-                        dynamic_ncols=True,
-                        colour='#ea0018',
-                        mininterval=3
-                        )
-            
-            for chunk in r.iter_content(chunk_size=1024):
-                if chunk:
-                    f.write(chunk)
-                    pbar.update(len(chunk))
+      with open(f'{fn}', 'wb') as f:
+          fn_short = os.path.split(fn)
+          
+          pbar = tqdm(total=int(r.headers['Content-Length']),
+                      desc=f"Downloading {fn_short[1]}",
+                      unit='MiB',
+                      unit_divisor=1024,
+                      unit_scale=True,
+                      dynamic_ncols=True,
+                      colour='#fffff',
+                      mininterval=3
+                      )
+          
+          for chunk in r.iter_content(chunk_size=1024):
+              if chunk:
+                  f.write(chunk)
+                  pbar.update(len(chunk))
 
 
 # Function that opens the multiple download_url functions
 def download_parallel(args):
     cpus = cpu_count()
-    ThreadPool(cpus - 1).map(download_url, args)
+    ThreadPool(dl_custom).map(download_url, args)
 
 # Function to check for duplicate files
 def md5_check(md5):
@@ -95,46 +220,22 @@ def md5_check(md5):
       md5_pool.append(md5)
       return False
   
-# Function to check for duplicate filenames
-def namecheck(filename):
-
-  if filename in name_pool:
-      filename_split = os.path.splitext(filename)
-      filename = filename_split[0] + '_DUPE' + filename_split[1]
-      return True
-  else:
-      name_pool.append(filename)
-      return False
-
 # Save db from last time
 def save_db():
   with open('webamp_skins_db.json', 'w', encoding='utf-8') as f:
     
-    for d in fn_dupes:
-       skins_db['dupes'].append(fn_dupes[d])
-    
-    cfg['config'].append(offset_amt)
-    cfg['config'].append(total_skins)
+    skins_db['config']['offset'] = offset_amt
+    skins_db['config']['total_skins'] = len(skins_db['skins'])
     f.write(json.dumps(skins_db))
 
-    
-# def save_cfg(): 
-#   cfg_save = {
-#   'offset': offset_amt,
-#   'total-skins': total_skins            
-#   }
-#   with open('webamp.cfg', 'w', encoding='utf-8') as w:
-#     w.write(json.dumps(cfg_save))
-#     print('cfg file created')
-#     w.close()       
-
-         
-
 # Make directory/files for skins/cfg
+print('')
+print('Creating folders for skins')
 skins_dir = "skins"
 classic_dir = "/classic"
 modern_dir = "/modern"
 
+# setup directory structures
 curdir = os.getcwd()
 path = os.path.join(curdir, skins_dir)
 classic_path = os.path.join(path + classic_dir)
@@ -142,31 +243,39 @@ modern_path = os.path.join(path + modern_dir)
 
 if not os.path.exists(path):
    os.mkdir(path)
+   print('')
    print('"/Skins" folder created')
+   time.sleep(0.5)
 
 if not os.path.exists(classic_path):
   os.mkdir(classic_path)
+  print('')
   print('"./Classic" folder created')
+  time.sleep(0.5)
 
 if not os.path.exists(modern_path):
    os.mkdir(modern_path)
+   print('')
    print('"./Modern" folder created')
+   time.sleep(0.5)
 
 # if there's a cfg file in the directory, load it
 if os.path.exists(curdir + '/webamp_skins_db.json'):
   load_cfg = True
+  print('')
+  print('Previous database found!')
+  time.sleep(1)
 else:
    load_cfg = False
+   print('')
+   print('No previous database found. Starting fresh~')
+   time.sleep(1)
 
 if load_cfg:
   with open('webamp_skins_db.json', 'r',encoding='utf-8') as c:
     skins_db = json.load(c)
     c.close()
   loaded_skins_amt = len(skins_db['skins'])
-  
-# if cfg file exists, load it into 'cfg' as list for use
-if load_cfg:
-  cfg = skins_db['config']
 
 
 # Set base query URL
@@ -190,27 +299,51 @@ total_data = json.loads(t.text)
 total_skins =  total_data['data']['skins']['count']
 
 # Announce skin count total
-print(f'{total_skins} total skins available online')
+print('')
+print(f'> {total_skins} total skins available on webamp.org')
+time.sleep(1)
 
+# if database detected, announce number of skins in database
 if load_cfg:
-  print(f'{loaded_skins_amt} currently in your database')
+  print('')
+  print(f'> {loaded_skins_amt} currently in your database')
+  time.sleep(1)
+
+  # if this number is equal to the amount of skins available on webamp.org, exit
   if loaded_skins_amt == total_skins:
+     print('')
      print('No more skins to get!')
+     time.sleep(1)
+     print('Let\'s get outta here, kid.')
+     time.sleep(3)
      sys.exit()
 
+# if database detected, calculate how to prepare query request based on existing skins
 if load_cfg:
-  db_range = range(loaded_skins_amt, math.ceil(total_skins/1000))
-  offset_amt = cfg['offset']
 
+  # grab offset from config 
+  offset_amt = skins_db['config']['offset']
+
+  # number of new skins available 
+  first = total_skins - loaded_skins_amt
+
+  # if number of new skis is less than or equal to 1,000 only one request is required (due to 1000 limit per request)
+  if first <= 1000:
+    db_range = trange(0, 1, desc="Updating skins database", colour="fffff")
+
+  # if more than 1000 requests calculate how many requests will be needed
+  else:
+    db_range = trange(0, math.ceil(first/1000), desc="Updating skins database", colour="fffff")
+  
+# if no database, send requests until max # of skins is gathered
 if not load_cfg:
-  db_range = range(0, math.ceil(total_skins/1000))
+  db_range = trange(0, math.ceil(total_skins/1000), desc="Getting skins database", colour="fffff")
   offset_amt = 0
    
 
 # Run query for 1000 skins (api limit) and offset the next request by 1000
-for i in trange(db_range, desc="Getting skins database"):
+for i in db_range:
 
-  # Create query for current offset of skins
   QUERY = (
     "query {" + '\n'
   f"skins(first: 1000, offset: {offset_amt})" + "{" + '\n'
@@ -234,35 +367,45 @@ for i in trange(db_range, desc="Getting skins database"):
   fresh_skins = json_data['data']['skins']['nodes']
 
   # Append new skins
+  for i in range(len(fresh_skins)):
+    skins_db['skins'].append(fresh_skins[i])
+    
+  # set offset amt for updated runs with more than one query needed
   if load_cfg:
-    for s in fresh_skins:
+    if first > 1000:
+      offset_amt = offset_amt + len(fresh_skins)
 
-      skins_db['skins'].append([s])
-
-
+  # Increase offset for next round on a fresh run
   if not load_cfg:
-    for s in fresh_skins:
-       
-      skins_db['skins'].append(s)
+     offset_amt = offset_amt + 1000
 
 
-  # Increase offset for next round
-  offset_amt = offset_amt + 1000
 
-# Find the total length of the skins (should be equal to the total count but who knows!)
+
+# Find the total amount of skins that are new as well as what's currently in the database
+new_links_total = len(fresh_skins)
 links_total = len(skins_db['skins'])
 
+# if database found, print how many new skins are available
 if load_cfg:
-  print(f'{links_total} new skins to download')
+  print('')
+  print(f'{new_links_total} new skins to download')
+  time.sleep(1)
 
 # Set your headers, kids. You never know.
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
 }
 
-# For each of the skins, send a download request and auto-rename to the skin name
-for i in trange(links_total, desc="Sorting Skins"):
+# set the range based on whether or not previous skins exist
+if load_cfg:
+  sort = trange(0, new_links_total-1, desc="Sorting Skins", colour="fffff")
+
+if not load_cfg:
+  sort = trange(links_total, desc="Sorting Skins", color="fffff")
   
+# For each of the skins, send a download request and auto-rename to the skin name
+for i in sort:
   filename = skins_db['skins'][i]['filename']
   md5 = skins_db['skins'][i]['md5']
   typename = skins_db['skins'][i]['__typename']
@@ -276,32 +419,35 @@ for i in trange(links_total, desc="Sorting Skins"):
 
   # if md5 matches list, duplicate!
   if md5_check(md5):
+      print('')
       print(f'Skipping duplicate: {filename} ')
       dl_link = ''
 
+  # add download link and filenames to separate lists
   if dl_link:
     urls.append(dl_link)
     fns.append(filename)
 
-  if load_cfg:
-    if filename not in saved_db['dupes'].keys():      
-      fn_dupes['dupes'] = filename
-
-  if not load_cfg:
-    fn_dupes['dupes'] = filename
-    
-
   # after all links have been processed...
   if i == links_total-1:
+    
+    # add urls, filenames, and types to a tuple
     inputs = zip(urls, fns, types)
+    
+    # call the save database function. used for resuming next time and requiring less queries. also saves the offset of where you left off.
     save_db()
+
+    # send all of info needed as a tuple to the download function
     download_parallel(inputs)
 
+# if database was detected, announce total of new skins downloaded
 if load_cfg:
-  total_new_skins = loaded_skins_amt + links_total
-  print(f'{total_new_skins} new skins downloaded')
+  print('')
+  print(f'{new_links_total} new skins downloaded')
 
+# if no database, announce total of skins downloaded
 if not load_cfg:
+   print('')
    print(f'{links_total} skins downloaded')
 
 
