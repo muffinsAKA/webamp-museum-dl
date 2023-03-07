@@ -3,7 +3,6 @@
 import requests
 import json
 import time
-import pandas as pd
 from tqdm import *
 import os
 import math
