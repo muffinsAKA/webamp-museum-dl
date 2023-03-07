@@ -62,27 +62,27 @@ print("\033[38;5;208m" + art + "\033[0m")
 
 input("[ Press Enter to continue... ]")
 print('')
-print('Is this your first time downloading skins using this tool?')
-print('1.) Yes     2.) No')
+print("\033[38;5;208m" + 'Is this your first time downloading skins using this tool?')
+print("\033[0m" + '1.) Yes     2.) No')
 first_time = int(input())
 if first_time == 1:
   print('')
-  print('Ok cool.')
+  print("\033[38;5;208m" + 'Ok cool.')
   time.sleep(1)
 if first_time == 2:
   print('')
-  print('Did you move anything or is it all still in the same folder as this app?')
-  print('Like your skins folder, your database file.....those things.')
-  print('1.) It\'s all still here     2.) I moved it')
+  print("\033[38;5;208m" + 'Did you move anything or is it all still in the same folder as this app?')
+  print("\033[38;5;208m" + 'Like your skins folder, your database file.....those things.')
+  print("\033[0m" + '1.) It\'s all still here     2.) I moved it')
   file_location = int(input())
   if file_location == 1:
     print('')
-    print('Thank god. Alright moving on.')
+    print("\033[38;5;208m" + 'Thank god. Alright moving on.')
     time.sleep(2)
     input('[ Press any key to move on ]')
   if file_location == 2:
     print('')
-    print('Well put it back. I\'m not building a whole customized folder flow.')
+    print("\033[38;5;208m" + 'Well put it back. I\'m not building a whole customized folder flow.')
     time.sleep(2)
     print(r"""It should look like this:
 
@@ -97,49 +97,49 @@ if first_time == 2:
                 webamp_skins_db.json""")
     print('')
     time.sleep(2)
-    input('lmk when you put that shit back')
+    input("\033[38;5;208m" + 'lmk when you put that shit back')
 
 print('')
-print('How many downloads do you want going at the same time?')
-print('1.) As many as possible    2.) Custom')
+print("\033[38;5;208m" + 'How many downloads do you want going at the same time?')
+print("\033[0m" + '1.) As many as possible    2.) Custom')
 dl_amt = int(input())
 if dl_amt == 1:
   cpus = cpu_count()
   dl_custom = cpus - 1
   print('')
-  print('You got it, pal. See you on the other side.')
+  print("\033[38;5;208m" + 'You got it, pal. See you on the other side.')
   time.sleep(1)
   print('3')
   time.sleep(1)
   print('2')
   time.sleep(1)
   print('1.5')
-  time.sleep(1)
-  print('haha jk')
   time.sleep(3)
+  print("\033[38;5;208m" + 'haha jk')
+  time.sleep(1)
 if dl_amt == 2:
   time.sleep(1)
   cpus = cpu_count()
   max_dl = cpus - 1
   print('')
-  print(f'Hit me with it. How many downloads at a time? (MAX: {max_dl})')
+  print("\033[38;5;208m" + f'Hit me with it. How many downloads at a time? (MAX: {max_dl})')
   dl_custom = int(input())
   if dl_custom <= max_dl:
     print('')
-    print(f'ok {dl_custom} at a time. have fun out there, champ')
+    print("\033[38;5;208m" + f'ok {dl_custom} at a time. have fun out there, champ')
     time.sleep(3)
   else:
       print('')
-      print(f'buddy. pal. {dl_custom}? what is this?')
+      print("\033[38;5;208m" + f'buddy. pal. {dl_custom}? what is this?')
       time.sleep(3)
       print('')
-      print('One more shot.')
+      print("\033[38;5;208m" + 'One more shot.')
       time.sleep(1)
       print('')
-      print(f'Hit me with it. How many downloads at a time? (MAX: {max_dl})')
+      print("\033[38;5;208m" + f'Hit me with it. How many downloads at a time? (MAX: {max_dl})')
       dl_custom = int(input())
       if dl_custom <= max_dl:
-        print('You got it, pal. See you on the other side.')
+        print("\033[38;5;208m" + 'You got it, pal. See you on the other side.')
         time.sleep(1)
         print('3')
         time.sleep(1)
@@ -147,10 +147,10 @@ if dl_amt == 2:
         time.sleep(3)
         print('1.5')
         time.sleep(1)
-        print('haha jk')
+        print("\033[38;5;208m" + 'haha jk')
         time.sleep(1)
       else:
-        print('goodbye.')
+        print("\033[38;5;208m" + 'goodbye.')
         time.sleep(5)
         sys.exit(1)
 
@@ -194,7 +194,7 @@ def download_url(inputs):
                       unit_divisor=1024,
                       unit_scale=True,
                       dynamic_ncols=True,
-                      colour='#fffff',
+                      colour='#FEB60C',
                       mininterval=3
                       )
           
@@ -231,6 +231,7 @@ def save_db():
 # Make directory/files for skins/cfg
 print('')
 print('Creating folders for skins')
+time.sleep(1)
 skins_dir = "skins"
 classic_dir = "/classic"
 modern_dir = "/modern"
@@ -245,31 +246,31 @@ if not os.path.exists(path):
    os.mkdir(path)
    print('')
    print('"/Skins" folder created')
-   time.sleep(0.5)
+   time.sleep(1)
 
 if not os.path.exists(classic_path):
   os.mkdir(classic_path)
   print('')
   print('"./Classic" folder created')
-  time.sleep(0.5)
+  time.sleep(1)
 
 if not os.path.exists(modern_path):
    os.mkdir(modern_path)
    print('')
    print('"./Modern" folder created')
-   time.sleep(0.5)
+   time.sleep(1)
 
 # if there's a cfg file in the directory, load it
 if os.path.exists(curdir + '/webamp_skins_db.json'):
   load_cfg = True
   print('')
   print('Previous database found!')
-  time.sleep(1)
+  time.sleep(2)
 else:
    load_cfg = False
    print('')
    print('No previous database found. Starting fresh~')
-   time.sleep(1)
+   time.sleep(2)
 
 if load_cfg:
   with open('webamp_skins_db.json', 'r',encoding='utf-8') as c:
@@ -329,15 +330,15 @@ if load_cfg:
 
   # if number of new skis is less than or equal to 1,000 only one request is required (due to 1000 limit per request)
   if first <= 1000:
-    db_range = trange(0, 1, desc="Updating skins database", colour="fffff")
+    db_range = trange(0, 1, desc="Updating skins database", colour="#FEB60C")
 
   # if more than 1000 requests calculate how many requests will be needed
   else:
-    db_range = trange(0, math.ceil(first/1000), desc="Updating skins database", colour="fffff")
+    db_range = trange(0, math.ceil(first/1000), desc="Updating skins database", colour="#FEB60C")
   
 # if no database, send requests until max # of skins is gathered
 if not load_cfg:
-  db_range = trange(0, math.ceil(total_skins/1000), desc="Getting skins database", colour="fffff")
+  db_range = trange(0, math.ceil(total_skins/1000), desc="Getting skins database", colour="#FEB60C")
   offset_amt = 0
    
 
@@ -399,10 +400,10 @@ headers = {
 
 # set the range based on whether or not previous skins exist
 if load_cfg:
-  sort = trange(0, new_links_total-1, desc="Sorting Skins", colour="fffff")
+  sort = trange(0, new_links_total-1, desc="Sorting Skins", colour="#FEB60C")
 
 if not load_cfg:
-  sort = trange(links_total, desc="Sorting Skins", color="fffff")
+  sort = trange(links_total, desc="Sorting Skins", colour="#FEB60C")
   
 # For each of the skins, send a download request and auto-rename to the skin name
 for i in sort:
