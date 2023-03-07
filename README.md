@@ -1,6 +1,6 @@
 # webamp-museum-dl
 
-downloads all existing skins from the Webamp Museum @ https://skins.webamp.org/
+downloads all existing skins from the Webamp Museum @ https://skins.webamp.org/ (currently ~15gb)
 
 will update from where you left off last time if you want to get the latest skins. lord willing.
 
