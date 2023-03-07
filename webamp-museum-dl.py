@@ -11,10 +11,11 @@ from multiprocessing.pool import ThreadPool
 import sys
 
 # VARIABLES
+md5dupes = 0
 urls = []
 fns = []
 types = []
-md5_pool = []
+md5pool = []
 name_pool = []
 skins_db = {
    "skins": [],
@@ -154,9 +155,6 @@ if dl_amt == 2:
         sys.exit(1)
 
 
-
-
-
 # FUNCTIONS
 # Download function that extracts the tuple to create variables
 def download_url(inputs):
@@ -212,17 +210,18 @@ def download_parallel(args):
 def md5_check(md5):
     
   # Checks if md5 is in the pool and if it is present delete the skin
-  if md5 in md5_pool:
-      skins_db.pop([i])
+  if md5 in md5pool:
+      skins_db['skins'].pop([i])
+      md5dupes = md5dupes + 1
       return True
   else:
-      md5_pool.append(md5)
+      md5pool.append(md5)
       return False
   
 # Save db from last time
 def save_db():
   with open('webamp_skins_db.json', 'w', encoding='utf-8') as f:
-    
+    skins_db['dupes'] = md5pool
     skins_db['config']['offset'] = offset_amt
     skins_db['config']['total_skins'] = len(skins_db['skins'])
     f.write(json.dumps(skins_db))
@@ -403,11 +402,18 @@ if load_cfg:
 
 if not load_cfg:
   sort = trange(links_total, desc="Sorting Skins", colour="#FEB60C")
-  
+
+for i in trange(len(skins_db), desc="Checking for duplicates"):
+  md5 = skins_db['skins'][i]['md5']
+  md5_check(md5)
+
+print('')
+print(f'{md5dupes} duplicates removed')
+time.sleep(2)
+
 # For each of the skins, send a download request and auto-rename to the skin name
 for i in sort:
   filename = skins_db['skins'][i]['filename']
-  md5 = skins_db['skins'][i]['md5']
   typename = skins_db['skins'][i]['__typename']
   dl_link = skins_db['skins'][i]['download_url']
 
@@ -416,12 +422,6 @@ for i in sort:
     types.append(True)
   else:
     types.append(False)
-
-  # if md5 matches list, duplicate!
-  if md5_check(md5):
-      print('')
-      print(f'Skipping duplicate: {filename} ')
-      dl_link = ''
 
   # add download link and filenames to separate lists
   if dl_link:
@@ -438,7 +438,7 @@ for i in sort:
     save_db()
 
     # send all of info needed as a tuple to the download function
-    download_parallel(inputs)
+    #download_parallel(inputs)
 
 # if database was detected, announce total of new skins downloaded
 if load_cfg:
