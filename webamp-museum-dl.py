@@ -58,7 +58,7 @@ art = r"""
 # print logo
 print("\033[38;5;208m" + art + "\033[0m")
 
-
+print('')
 input("[ Press Enter to continue... ]")
 print('')
 print("\033[38;5;208m" + 'Is this your first time downloading skins using this tool?')
