@@ -428,7 +428,7 @@ for i in sort:
     save_db()
 
     # send all of info needed as a tuple to the download function
-    #download_parallel(inputs)
+    download_parallel(inputs)
 
 # if database was detected, announce total of new skins downloaded
 if load_cfg:
