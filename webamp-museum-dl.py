@@ -16,6 +16,7 @@ urls = []
 fns = []
 types = []
 md5pool = []
+new_md5pool = []
 name_pool = []
 skins_db = {
    "skins": [],
@@ -206,23 +207,10 @@ def download_parallel(args):
     cpus = cpu_count()
     ThreadPool(dl_custom).map(download_url, args)
 
-# Function to check for duplicate files
-def md5_check(md5):
-    
-  # Checks if md5 is in the pool and if it is present delete the skin
-  if md5 in md5pool:
-      skins_db['skins'].pop([i])
-      md5dupes = md5dupes + 1
-      return True
-  else:
-      md5pool.append(md5)
-      return False
-  
 # Save db from last time
 def save_db():
   with open('webamp_skins_db.json', 'w', encoding='utf-8') as f:
     skins_db['dupes'] = md5pool
-    skins_db['config']['offset'] = offset_amt
     skins_db['config']['total_skins'] = len(skins_db['skins'])
     f.write(json.dumps(skins_db))
 
@@ -321,7 +309,7 @@ if load_cfg:
 if load_cfg:
 
   # grab offset from config 
-  offset_amt = skins_db['config']['offset']
+  offset_amt = skins_db['config']['total_skins']
 
   # number of new skins available 
   first = total_skins - loaded_skins_amt
@@ -364,9 +352,14 @@ for i in db_range:
 
   # Identify the skins list in the json
   fresh_skins = json_data['data']['skins']['nodes']
-
+  
   # Append new skins
   for i in range(len(fresh_skins)):
+    if load_cfg:
+      for s in range(len(skins_db['skins'])):
+        if fresh_skins[i]['md5'] == skins_db['skins'][s]['md5']:
+          skins_db['skins'].pop([s])
+          md5dupes = md5dupes + 1
     skins_db['skins'].append(fresh_skins[i])
     
   # set offset amt for updated runs with more than one query needed
@@ -403,14 +396,6 @@ if load_cfg:
 if not load_cfg:
   sort = trange(links_total, desc="Sorting Skins", colour="#FEB60C")
 
-# if prev database, load md5s into dupe pool
-if load_cfg:
-    for d in skins_db['skins']['dupes']:
-      md5pool.append(d)
-    
-for i in trange(len(skins_db['skins']), desc="Checking for duplicates"):
-  md5 = skins_db['skins'][i]['md5']
-  md5_check(md5)
 
 print('')
 print(f'{md5dupes} duplicates removed')
