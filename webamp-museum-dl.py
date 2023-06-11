@@ -79,7 +79,7 @@ if first_time == 2:
   if file_location == 1:
     print('')
     print("\033[38;5;208m" + 'Thank god. Alright moving on.')
-    time.sleep(2)
+    time.sleep(1)
     input('[ Press any key to move on ]')
   if file_location == 2:
     print('')
@@ -115,7 +115,7 @@ if dl_amt == 1:
   print('2')
   time.sleep(1)
   print('1.5')
-  time.sleep(3)
+  time.sleep(1)
   print("\033[38;5;208m" + 'haha jk')
   time.sleep(1)
 if dl_amt == 2:
@@ -155,7 +155,6 @@ if dl_amt == 2:
         time.sleep(5)
         sys.exit(1)
 
-
 # FUNCTIONS
 # Download function that extracts the tuple to create variables
 def download_url(inputs):
@@ -167,6 +166,7 @@ def download_url(inputs):
   # If there's no url, add it to the number of missing show urls
   if url:
 
+    print(url)
     # if the filename exists in the folder already
     if fn in os.listdir(classic_path) or os.listdir(modern_path):
 
@@ -401,12 +401,14 @@ print('')
 print(f'{md5dupes} duplicates removed')
 time.sleep(2)
 
+
+
 # For each of the skins, send a download request and auto-rename to the skin name
 for i in sort:
   filename = skins_db['skins'][i]['filename']
   typename = skins_db['skins'][i]['__typename']
   dl_link = skins_db['skins'][i]['download_url']
-
+  
   # if type = true, skin is classic.  if false, modern.
   if typename == 'ClassicSkin':
     types.append(True)
@@ -418,17 +420,15 @@ for i in sort:
     urls.append(dl_link)
     fns.append(filename)
 
-  # after all links have been processed...
-  if i == links_total-1:
     
-    # add urls, filenames, and types to a tuple
-    inputs = zip(urls, fns, types)
-    
-    # call the save database function. used for resuming next time and requiring less queries. also saves the offset of where you left off.
-    save_db()
+# add urls, filenames, and types to a tuple
+inputs = zip(urls, fns, types)
 
-    # send all of info needed as a tuple to the download function
-    download_parallel(inputs)
+# call the save database function. used for resuming next time and requiring less queries. also saves the offset of where you left off.
+save_db()
+
+# send all of info needed as a tuple to the download function
+download_parallel(inputs)
 
 # if database was detected, announce total of new skins downloaded
 if load_cfg:
